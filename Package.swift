@@ -13,8 +13,16 @@ let package = Package(
             name: "ArrowGeneratorPlugin",
             targets: ["ArrowGeneratorPlugin"]
         ),
+        .library(
+            name: "ArrowGeneratorPluginSupport",
+            targets: ["ArrowGeneratorPluginSupport"]
+        )
     ],
     targets: [
+        .target(
+            name: "ArrowGeneratorPluginSupport",
+            path: "Sources/Support"
+        ),
         .plugin(
             name: "ArrowGeneratorPlugin",
             capability: .command(

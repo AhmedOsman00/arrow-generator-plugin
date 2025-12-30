@@ -3,28 +3,31 @@ name: Release
 on:
   push:
     tags:
-      - '*.*.*'
+      - 'v*.*.*'
+
+permissions:
+  contents: write
 
 jobs:
   release:
     name: Create Release
-    runs-on: macos-14
+    runs-on: macos-15
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Read Swift Version
       id: swift-version
       run: echo "version=$(cat .swift-version)" >> $GITHUB_OUTPUT
 
     - name: Setup Swift
-      uses: swift-actions/setup-swift@v2
+      uses: swift-actions/setup-swift@v3
       with:
         swift-version: ${{ steps.swift-version.outputs.version }}
 
     - name: Cache Swift Packages
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: |
           .build
@@ -33,8 +36,8 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-spm-
     
-    - name: Build For Release
-      run: swift build -c release
+    - name: Build Project
+      run: swift build -v
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
